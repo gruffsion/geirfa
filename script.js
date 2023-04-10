@@ -1,8 +1,8 @@
 let wordsMap = new Map();
 const processedTranslations = new Set();
-const fetchDataBtn = document.getElementById("submit");
-const loader = document.querySelector(".loader");
+let loader = 0;
 const paragraphs = document.querySelectorAll("p");
+const headerElement = document.querySelector("header");
 
 
 async function getEnlemmaFromLemma(wordsMap) {
@@ -55,50 +55,53 @@ async function getEnlemmaFromLemma(wordsMap) {
 
 //scrape the page for text within any <p> elements
 async function translateWordsInParagraphs(wordsMap) {
-    const words = [];
-    let wordId = 0;
-    for (const paragraph of paragraphs) {
-        const paragraphWords = paragraph.textContent.trim().split(/\s+/);
-        for (const word of paragraphWords) {
-          const cleanedWord = word.replace(/"/g, ''); // Remove double quotation marks
-          if (cleanedWord.length > 3) {
-            wordsMap.set(cleanedWord, { id: wordId++ });
-            words.push(cleanedWord);
-          }
-        }
-      }
-  
-    const results = await getEnlemmaFromLemma(wordsMap);
-  
-   
+  const words = [];
+  let wordId = 0;
 
-    for (const word of words) {
-        const { enlemma } = results[wordsMap.get(word).id];
-        const elements = document.querySelectorAll(`p :not(.translate)[data-word="${word}"]`);
-      
-        // Check if the enlemma hasn't been processed before
-        if (enlemma && !processedTranslations.has(enlemma)) {
-          processedTranslations.add(enlemma); // Add enlemma to the set of processed translations
-      
-          for (const element of elements) {
-            element.classList.add('translated'); // Add 'translated' class to the original word
-      
-            const tooltip = createTooltip(word + ": " + enlemma);
-            document.body.appendChild(tooltip);
-      
-            element.addEventListener('click', event => {
-              showTooltip(event, tooltip);
-            });
-      
-            element.addEventListener('mouseleave', () => {
-              hideTooltip(tooltip);
-            });
-          }
-        }
-      }
-      
+  // wrap words in all paragraphs with a <span>
+  for (const paragraph of paragraphs) {
+    wrapWordsWithSpan(paragraph);
   }
-  
+
+  // scrape the page for text within any <p> elements
+  for (const paragraph of paragraphs) {
+    const paragraphWords = paragraph.textContent.trim().split(/\s+/);
+    for (const word of paragraphWords) {
+      const cleanedWord = word.replace(/"/g, ''); // Remove double quotation marks
+      if (cleanedWord.length > 3) {
+        wordsMap.set(cleanedWord, { id: wordId++ });
+        words.push(cleanedWord);
+      }
+    }
+  }
+
+  const results = await getEnlemmaFromLemma(wordsMap);
+
+  for (const word of words) {
+    const { enlemma } = results[wordsMap.get(word).id];
+    const elements = document.querySelectorAll(`p :not(.translate)[data-word="${word}"]`);
+
+    // Check if the enlemma hasn't been processed before
+    if (enlemma && !processedTranslations.has(enlemma)) {
+      processedTranslations.add(enlemma); // Add enlemma to the set of processed translations
+
+      for (const element of elements) {
+        element.classList.add('translated'); // Add 'translated' class to the original word
+
+        const tooltip = createTooltip(word + ": " + enlemma);
+        document.body.appendChild(tooltip);
+
+        element.addEventListener('click', event => {
+          showTooltip(event, tooltip);
+        });
+
+        element.addEventListener('mouseleave', () => {
+          hideTooltip(tooltip);
+        });
+      }
+    }
+  }
+}
 
 
   function wrapWordsWithSpan(paragraph) {
@@ -110,10 +113,98 @@ async function translateWordsInParagraphs(wordsMap) {
     paragraph.innerHTML = wrappedWords.join(' ');
   }
   
-  for (const paragraph of paragraphs){
-    wrapWordsWithSpan(paragraph);
-  };
 
 
+  function createGeurfaPlugin() {
+    // Create the container div element
+    const geurfaPluginDiv = document.createElement("div");
+    geurfaPluginDiv.id = "geurfa-plugin";
   
+    // Create the submit button element
+    const submitButton = document.createElement("button");
+    submitButton.id = "submit";
+    submitButton.innerHTML = "Geurfa";
+    submitButton.onclick = function() {
+      translateWordsInParagraphs(wordsMap);
+    };
+  
+    // Create the loader span element
+    const loaderSpan = document.createElement("span");
+    loaderSpan.classList.add("loader");
+  
+    // Append the button and span elements to the container div element
+    geurfaPluginDiv.appendChild(submitButton);
+    geurfaPluginDiv.appendChild(loaderSpan);
+  
+  
+  
+    // Return the container div element
+    return geurfaPluginDiv;
+  }
 
+const geurfaPlugin = createGeurfaPlugin();
+headerElement.appendChild(geurfaPlugin);
+
+//global variables after plugin has been created
+loader = document.querySelector(".loader");
+const fetchDataBtn = document.getElementById("submit");
+
+  // Add the CSS dynamically
+    const style = document.createElement('style');
+    style.innerHTML = `
+      #geurfa-plugin {
+        opacity: 60%;
+        position: absolute;
+        top: 0;
+        right: 0; 
+      }
+
+      .translated {
+        text-decoration: underline;
+        text-decoration-color:  #3498db;
+        cursor: pointer;
+        position: relative; 
+      }
+    
+      
+      .tooltip {
+        display: none;
+        position: absolute;
+        background-color: white;
+        border: 1px solid red;
+        padding: 5px;
+        z-index: 9999;
+        margin-top: -10px; 
+      }
+      
+    
+      button{
+        border: 10px solid #e3e3e3; 
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        padding:10px;
+        transition: border-color 0.3s ease-in-out;
+    
+      }
+      
+    button:hover {
+        border-color: rgb(182, 182, 182);
+      }
+    
+      .loader {
+        display: none;
+        border: 10px solid #f3f3f3; 
+        border-top: 10px solid #3498db; 
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 2s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
