@@ -37,7 +37,7 @@ async function getEnlemmaFromLemma(wordsMap) {
   // Create the floating dislpay with the translated word
   function createTooltip(text) {
     const tooltip = document.createElement('span');
-    tooltip.innerHTML = text;
+    tooltip.innerHTML = text.replace(/_/g, ' '); // replace all underscores with spaces
     tooltip.classList.add('tooltip');
     return tooltip;
   }
