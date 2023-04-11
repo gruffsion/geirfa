@@ -153,13 +153,7 @@ const fetchDataBtn = document.getElementById("submit");
   // Add the CSS dynamically
     const style = document.createElement('style');
     style.innerHTML = `
-      #geurfa-plugin {
-        opacity: 60%;
-        // position: absolute;
-        top: 0;
-        right: 0; 
-      }
-
+  
       .translated {
         text-decoration: underline;
         text-decoration-color:  #3498db;
@@ -185,8 +179,9 @@ const fetchDataBtn = document.getElementById("submit");
         width: 80px;
         height: 80px;
         padding:10px;
+        background-color: white;
         transition: border-color 0.3s ease-in-out;
-    
+        
       }
       
     button:hover {
