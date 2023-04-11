@@ -27,7 +27,8 @@ async function getEnlemmaFromLemma(wordsMap) {
   
     // Hide the loader animation when done
     loader.style.display = "none";  
-    fetchDataBtn.style.display = "block";  
+    fetchDataBtn.style.display = "block";
+    fetchDataBtn.style.borderColor = "#3498db";
     return results;
   }
   
@@ -154,7 +155,7 @@ const fetchDataBtn = document.getElementById("submit");
     style.innerHTML = `
       #geurfa-plugin {
         opacity: 60%;
-        position: absolute;
+        // position: absolute;
         top: 0;
         right: 0; 
       }
