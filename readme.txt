@@ -2,7 +2,7 @@ Mae'r ap yma yn hwyluso darllen erthyglau Cymraeg. Yr uchelgais yw creu rhaglen 
 
 Mae Geurfa yn defnyddio data 'Eurfa' o wefan Kaggle: https://www.kaggle.com/datasets/rtatman/eurfa-welsh-dictionary
 
-Mae croeso i unrhywun addasu, ail-ddefnyddio neu wella yr ap mewn unrhyw ffordd heb ganiatad.
+Mae croeso i unrhywun addasu, ail-ddefnyddio, wella, feirniadu neu fychanu yr ymdrech mewn unrhyw ffordd ac heb ganiatad.
 
 Cyfyngiadau:
 - Nid yw'r ap yn adnabod geiriau sydd wedi'w treiglo na rhai ffurfiau eraill
