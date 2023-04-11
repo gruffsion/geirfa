@@ -7,3 +7,4 @@ Mae croeso i unrhywun addasu, ail-ddefnyddio, wella, feirniadu neu fychanu yr ym
 Cyfyngiadau:
 - Nid yw'r ap yn adnabod geiriau sydd wedi'w treiglo na rhai ffurfiau eraill
 - Mae'n rhaid bod elfen HTML <header> ar wefan er mwyn gosod yr ap
+- Mae bas data Geurfa ychydig yn gyfyngedig o gymharu a rhai eraill
