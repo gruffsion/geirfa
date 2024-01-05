@@ -10,7 +10,7 @@ async function getEnlemmaFromLemma(wordsMap) {
     loader.style.display = "block";
     fetchDataBtn.style.display = "none";  
 
-    //make the api call. this currently points to data from Kaggle, but would be adapted to another library
+    //make the api call. this currently points to data from Kaggle, but can be adapted to another library
     const url = "https://raw.githubusercontent.com/gruffsion/geiriadursyml/main/geiriadur.json";
     const response = await fetch(url);
     const data = await response.json();
